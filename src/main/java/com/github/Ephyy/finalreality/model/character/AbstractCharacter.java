@@ -1,8 +1,8 @@
-package com.github.cc3002.finalreality.model.character;
+package com.github.Ephyy.finalreality.model.character;
 
-import com.github.cc3002.finalreality.model.character.player.CharacterClass;
-import com.github.cc3002.finalreality.model.character.player.PlayerCharacter;
-import com.github.cc3002.finalreality.model.weapon.Weapon;
+import com.github.Ephyy.finalreality.model.character.player.CharacterClass;
+import com.github.Ephyy.finalreality.model.character.player.AbstractPlayerCharacter;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -20,7 +20,6 @@ public abstract class AbstractCharacter implements ICharacter {
   protected final BlockingQueue<ICharacter> turnsQueue;
   protected final String name;
   private final CharacterClass characterClass;
-  private Weapon equippedWeapon = null;
   private ScheduledExecutorService scheduledExecutor;
 
   protected AbstractCharacter(@NotNull BlockingQueue<ICharacter> turnsQueue,
@@ -30,10 +29,11 @@ public abstract class AbstractCharacter implements ICharacter {
     this.characterClass = characterClass;
   }
 
+  // Hay que usar DD
   @Override
   public void waitTurn() {
     scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
-    if (this instanceof PlayerCharacter) {
+    if (this instanceof AbstractPlayerCharacter) {
       scheduledExecutor
           .schedule(this::addToQueue, equippedWeapon.getWeight() / 10, TimeUnit.SECONDS);
     } else {
@@ -54,18 +54,6 @@ public abstract class AbstractCharacter implements ICharacter {
   @Override
   public String getName() {
     return name;
-  }
-
-  @Override
-  public void equip(Weapon weapon) {
-    if (this instanceof PlayerCharacter) {
-      this.equippedWeapon = weapon;
-    }
-  }
-
-  @Override
-  public Weapon getEquippedWeapon() {
-    return equippedWeapon;
   }
 
   @Override

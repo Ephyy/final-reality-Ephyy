@@ -1,10 +1,10 @@
-package com.github.cc3002;
+package com.github.Ephyy;
 
-import com.github.cc3002.finalreality.model.character.ICharacter;
-import com.github.cc3002.finalreality.model.character.player.CharacterClass;
-import com.github.cc3002.finalreality.model.character.player.PlayerCharacter;
-import com.github.cc3002.finalreality.model.weapon.Weapon;
-import com.github.cc3002.finalreality.model.weapon.WeaponType;
+import com.github.Ephyy.finalreality.model.character.ICharacter;
+import com.github.Ephyy.finalreality.model.character.player.CharacterClass;
+import com.github.Ephyy.finalreality.model.character.player.AbstractPlayerCharacter;
+import com.github.Ephyy.finalreality.model.weapon.Weapon;
+import com.github.Ephyy.finalreality.model.weapon.WeaponType;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -20,7 +20,7 @@ public class TimerExample {
     for (int i = 0; i < 10; i++) {
       // Gives a random speed to each character to generate different waiting times
       var weapon = new Weapon("", 0, rng.nextInt(50), WeaponType.KNIFE);
-      var character = new PlayerCharacter(Integer.toString(i), queue,
+      var character = new AbstractPlayerCharacter(Integer.toString(i), queue,
           CharacterClass.THIEF);
       character.equip(weapon);
       character.waitTurn();

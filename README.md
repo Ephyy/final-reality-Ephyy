@@ -16,4 +16,40 @@ enemies controlled by the computer.
 
 ---
 
-**The rest of the documentation is left for the users of this template to complete**
+## Getting Started
+
+### Prerequisites
+
+- Java
+- Gradle
+- IntelliJ (preferentemente)
+
+### Installing
+
+Crear una copia de un repositorio local ejecutando:
+```
+$ git clone https://github.com/CC3002-Metodologias/final-reality-Ephyy.git
+```
+
+Y luego abrir el proyecto en su IDE (de preferencia en IntelliJ)
+
+## Running the tests
+
+Para correr todos los tests del proyecto se debe ejecutar la carpeta.
+```
+...\src\test
+```
+
+## Deployment
+Por ahora el proyecto no tiene una forma de ser ejecutado debido a que solo está conformado por
+los modelos y funcionalidades que seran utilizadas en las próximas entregas pero todo se encuentra
+testeado.
+
+## Built With
+
+* Gradle
+
+## Authors
+
+- **Vicente Ardiles Silva** - [Ephyy](https://github.com/Ephyy)
+- **Ignacio Slater Muñoz** - [islaterm](https://github.com/islaterm)
