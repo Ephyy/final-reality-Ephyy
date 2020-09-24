@@ -6,6 +6,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.BlockingQueue;
 
 /**
+ * A class that holds all the information of a single mage character in the game.
+ *
+ * @author Ignacio Slater Muñoz.
  * @author Vicente Ardiles Silva.
  */
 public class Mage extends AbstractPlayerCharacter {

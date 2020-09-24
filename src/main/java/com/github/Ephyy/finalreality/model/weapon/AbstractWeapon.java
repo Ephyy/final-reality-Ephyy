@@ -3,12 +3,12 @@ package com.github.Ephyy.finalreality.model.weapon;
 import java.util.Objects;
 
 /**
- * A class that holds all the information of a weapon.
+ * An abstract class that holds all the information of a weapon.
  *
  * @author Ignacio Slater Muñoz.
  * @author Vicente Ardiles Silva.
  */
-public class Weapon {
+public abstract class AbstractWeapon implements IWeapon {
 
   private final String name;
   private final int damage;
@@ -20,22 +20,25 @@ public class Weapon {
    *
    * @see WeaponType
    */
-  public Weapon(final String name, final int damage, final int weight,
-      final WeaponType type) {
+  public AbstractWeapon(final String name, final int damage, final int weight,
+                        final WeaponType type) {
     this.name = name;
     this.damage = damage;
     this.weight = weight;
-    this.type = type;
+    this.type = type; // esto probablemente se ira
   }
 
-  private String getName() {
+  @Override
+  public String getName() {
     return name;
   }
 
-  private int getDamage() {
+  @Override
+  public int getDamage() {
     return damage;
   }
 
+  @Override
   public int getWeight() {
     return weight;
   }
@@ -49,10 +52,10 @@ public class Weapon {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof Weapon)) {
+    if (!(o instanceof AbstractWeapon)) {
       return false;
     }
-    final Weapon weapon = (Weapon) o;
+    final AbstractWeapon weapon = (AbstractWeapon) o;
     return getDamage() == weapon.getDamage() &&
         getWeight() == weapon.getWeight() &&
         getName().equals(weapon.getName()) &&

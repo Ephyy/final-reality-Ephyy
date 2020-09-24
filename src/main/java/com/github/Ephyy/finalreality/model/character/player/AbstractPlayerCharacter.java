@@ -5,11 +5,12 @@ import com.github.Ephyy.finalreality.model.character.ICharacter;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 
-import com.github.Ephyy.finalreality.model.weapon.Weapon;
+import com.github.Ephyy.finalreality.model.weapon.AbstractWeapon;
+import com.github.Ephyy.finalreality.model.weapon.IWeapon;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * A class that holds all the information of a single character of the game.
+ * An abstract class that holds all the information of a single character of the game.
  *
  * @author Ignacio Slater Muñoz.
  * @author Vicente Ardiles Silva.
@@ -17,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 public abstract class AbstractPlayerCharacter extends AbstractCharacter
         implements IPlayerCharacter {
 
-  private Weapon equippedWeapon = null;
+  private AbstractWeapon equippedWeapon = null;
 
   /**
    * Creates a new character.
@@ -37,13 +38,13 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
 
   // Hay que usar DD
   @Override
-  public void equip(Weapon weapon) {
+  public void equip(IWeapon weapon) {
     if (this instanceof IPlayerCharacter) {
       this.equippedWeapon = weapon;
     }
   }
   @Override
-  public Weapon getEquippedWeapon() {
+  public AbstractWeapon getEquippedWeapon() {
     return equippedWeapon;
   }
 

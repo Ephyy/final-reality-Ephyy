@@ -1,7 +1,6 @@
 package com.github.Ephyy.finalreality.model.character;
 
 import com.github.Ephyy.finalreality.model.character.player.CharacterClass;
-import com.github.Ephyy.finalreality.model.weapon.Weapon;
 
 /**
  * This represents a character from the game.
