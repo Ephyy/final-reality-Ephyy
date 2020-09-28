@@ -5,7 +5,6 @@ import com.github.Ephyy.finalreality.model.character.ICharacter;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 
-import com.github.Ephyy.finalreality.model.weapon.AbstractWeapon;
 import com.github.Ephyy.finalreality.model.weapon.IWeapon;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 public abstract class AbstractPlayerCharacter extends AbstractCharacter
         implements IPlayerCharacter {
 
-  private AbstractWeapon equippedWeapon = null;
+  private IWeapon equippedWeapon = null;
 
   /**
    * Creates a new character.
@@ -44,7 +43,7 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
     }
   }
   @Override
-  public AbstractWeapon getEquippedWeapon() {
+  public IWeapon getEquippedWeapon() {
     return equippedWeapon;
   }
 
