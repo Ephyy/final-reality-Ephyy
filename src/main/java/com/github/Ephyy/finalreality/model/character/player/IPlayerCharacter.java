@@ -1,5 +1,6 @@
 package com.github.Ephyy.finalreality.model.character.player;
 
+import com.github.Ephyy.finalreality.model.character.ICharacter;
 import com.github.Ephyy.finalreality.model.weapon.IWeapon;
 
 /**
@@ -9,7 +10,7 @@ import com.github.Ephyy.finalreality.model.weapon.IWeapon;
  * @author Ignacio Slater Muñoz.
  * @author Vicente Ardiles Silva.
  */
-public interface IPlayerCharacter {
+public interface IPlayerCharacter extends ICharacter {
 
   /**
    * Equips a weapon to the character.

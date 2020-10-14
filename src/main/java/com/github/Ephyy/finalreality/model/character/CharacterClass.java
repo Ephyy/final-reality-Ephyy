@@ -1,4 +1,4 @@
-package com.github.Ephyy.finalreality.model.character.player;
+package com.github.Ephyy.finalreality.model.character;
 
 /**
  * Enumeration of the classes a player character may have.

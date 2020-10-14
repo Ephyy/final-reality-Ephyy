@@ -1,52 +1,54 @@
 package com.github.Ephyy.finalreality.model.weapon;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.BeforeEach;
+import com.github.Ephyy.finalreality.model.character.ICharacter;
 import org.junit.jupiter.api.Test;
 
-class AbstractWeaponTest {
+import static org.junit.jupiter.api.Assertions.*;
 
-  private static final String AXE_NAME = "Test Axe";
-  private static final String STAFF_NAME = "Test Staff";
-  private static final String SWORD_NAME = "Test Sword";
-  private static final String BOW_NAME = "Test Bow";
-  private static final String KNIFE_NAME = "Test Knife";
-  private static final int DAMAGE = 15;
-  private static final int SPEED = 10;
+public abstract class AbstractWeaponTest {
 
-  private AbstractWeapon testAxe;
-  private AbstractWeapon testStaff;
-  private AbstractWeapon testSword;
-  private AbstractWeapon testBow;
-  private AbstractWeapon testKnife;
+  protected static final String AXE_NAME = "Test Axe";
+  protected static final String STAFF_NAME = "Test Staff";
+  protected static final String SWORD_NAME = "Test Sword";
+  protected static final String BOW_NAME = "Test Bow";
+  protected static final String KNIFE_NAME = "Test Knife";
+  protected static final int DAMAGE = 15;
+  protected static final int WEIGHT = 10;
 
-  @BeforeEach
-  void setUp() {
-    testAxe = new AbstractWeapon(AXE_NAME, DAMAGE, SPEED, WeaponType.AXE);
-    testStaff = new AbstractWeapon(STAFF_NAME, DAMAGE, SPEED, WeaponType.STAFF);
-    testSword = new AbstractWeapon(SWORD_NAME, DAMAGE, SPEED, WeaponType.SWORD);
-    testBow = new AbstractWeapon(BOW_NAME, DAMAGE, SPEED, WeaponType.BOW);
-    testKnife = new AbstractWeapon(KNIFE_NAME, DAMAGE, SPEED, WeaponType.KNIFE);
-  }
+  protected IWeapon testWeapon;
 
+  /**
+   * Checks that the class' constructor and equals method works properly.
+   */
   @Test
-  void constructorTest() {
-    var expectedAxe = new AbstractWeapon(AXE_NAME, DAMAGE, SPEED, WeaponType.AXE);
-    var expectedStaff = new AbstractWeapon(STAFF_NAME, DAMAGE, SPEED, WeaponType.STAFF);
-    var expectedSword = new AbstractWeapon(SWORD_NAME, DAMAGE, SPEED, WeaponType.SWORD);
-    var expectedBow = new AbstractWeapon(BOW_NAME, DAMAGE, SPEED, WeaponType.BOW);
-    var expectedKnife = new AbstractWeapon(KNIFE_NAME, DAMAGE, SPEED, WeaponType.KNIFE);
+  public abstract void constructorTest();
 
-    assertEquals(expectedAxe, testAxe);
-    assertEquals(expectedAxe.hashCode(), testAxe.hashCode());
-    assertEquals(expectedStaff, testStaff);
-    assertEquals(expectedStaff.hashCode(), testStaff.hashCode());
-    assertEquals(expectedSword, testSword);
-    assertEquals(expectedSword.hashCode(), testSword.hashCode());
-    assertEquals(expectedBow, testBow);
-    assertEquals(expectedBow.hashCode(), testBow.hashCode());
-    assertEquals(expectedKnife, testKnife);
-    assertEquals(expectedKnife.hashCode(), testKnife.hashCode());
+  protected void checkEqualsConstruction(final IWeapon expectedWeapon) {
+    assertEquals(testWeapon, testWeapon);
+    assertEquals(expectedWeapon, testWeapon);
+    assertEquals(expectedWeapon.hashCode(), testWeapon.hashCode());
   }
+
+  protected void checkNotEqualsConstruction(final IWeapon actualWeapon) {
+    assertNotEquals(testWeapon, actualWeapon);
+    assertNotEquals(testWeapon, null);
+    assertNotEquals(testWeapon, new Object());
+  }
+
+  protected IWeapon getWeapon(WeaponType type) {
+    switch (type) {
+      case AXE:
+        return new Axe(AXE_NAME, DAMAGE, WEIGHT, type);
+      case BOW:
+        return new Bow(BOW_NAME, DAMAGE, WEIGHT, type);
+      case KNIFE:
+        return new Knife(KNIFE_NAME, DAMAGE, WEIGHT, type);
+      case STAFF:
+        return new Staff(STAFF_NAME, DAMAGE, WEIGHT, type);
+      default:
+        return new Sword(SWORD_NAME, DAMAGE, WEIGHT, type);
+      // In the future default can 'catch' an unexpected value.
+    }
+  }
+  // endregopn
 }

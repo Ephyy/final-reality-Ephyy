@@ -1,6 +1,8 @@
 package com.github.Ephyy.finalreality.model.character.player;
 
+import com.github.Ephyy.finalreality.model.character.CharacterClass;
 import com.github.Ephyy.finalreality.model.character.ICharacter;
+import com.github.Ephyy.finalreality.model.weapon.IWeapon;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.BlockingQueue;
@@ -13,8 +15,12 @@ import java.util.concurrent.BlockingQueue;
  */
 public class WhiteMage extends AbstractMage {
 
-  public WhiteMage(@NotNull String name, @NotNull BlockingQueue<ICharacter> turnsQueue,
-                   CharacterClass characterClass, int mana) {
-    super(name, turnsQueue, characterClass, mana);
+  /**
+   * Creates a new WhiteMage with a name, the queue and stats with the characters ready to
+   * play.
+   */
+  public WhiteMage(BlockingQueue<ICharacter> turnsQueue, String name, CharacterClass characterClass,
+                   int hp, int atk, int def, IWeapon equippedWeapon, int mana) {
+    super(turnsQueue, name, characterClass, hp, atk, def, equippedWeapon, mana);
   }
 }

@@ -3,7 +3,8 @@ ChangeLog
 
 Version 2.0
 -----------
-Write your changes in here
+
+- (B.1) Created the basics models of the proyect
 
 Version 1.0
 -----------

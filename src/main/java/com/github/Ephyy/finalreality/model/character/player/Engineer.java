@@ -1,6 +1,8 @@
 package com.github.Ephyy.finalreality.model.character.player;
 
+import com.github.Ephyy.finalreality.model.character.CharacterClass;
 import com.github.Ephyy.finalreality.model.character.ICharacter;
+import com.github.Ephyy.finalreality.model.weapon.IWeapon;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.BlockingQueue;
@@ -13,8 +15,12 @@ import java.util.concurrent.BlockingQueue;
  */
 public class Engineer extends AbstractPlayerCharacter implements ICommon {
 
-  public Engineer(@NotNull String name, @NotNull BlockingQueue<ICharacter> turnsQueue,
-                  CharacterClass characterClass) {
-    super(name, turnsQueue, characterClass);
+  /**
+   * Creates a new Engineer with a name, the queue and stats with the characters ready to
+   * play.
+   */
+  public Engineer(BlockingQueue<ICharacter> turnsQueue, String name, CharacterClass characterClass,
+                  int hp, int atk, int def, IWeapon equippedWeapon) {
+    super(turnsQueue, name, characterClass, hp, atk, def, equippedWeapon);
   }
 }

@@ -1,6 +1,5 @@
 package com.github.Ephyy.finalreality.model.character;
 
-import com.github.Ephyy.finalreality.model.character.player.CharacterClass;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import org.jetbrains.annotations.NotNull;
@@ -19,9 +18,9 @@ public class Enemy extends AbstractCharacter {
    * Creates a new enemy with a name, a weight and the queue with the characters ready to
    * play.
    */
-  public Enemy(@NotNull final String name, final int weight,
-      @NotNull final BlockingQueue<ICharacter> turnsQueue) {
-    super(turnsQueue, name, CharacterClass.ENEMY);
+  public Enemy(BlockingQueue<ICharacter> turnsQueue, String name, CharacterClass characterClass,
+               int hp, int atk, int def, int weight) {
+    super(turnsQueue, name, characterClass, hp, atk, def);
     this.weight = weight;
   }
 
@@ -32,20 +31,19 @@ public class Enemy extends AbstractCharacter {
     return weight;
   }
 
+
   @Override
-  public boolean equals(final Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof Enemy)) {
-      return false;
-    }
-    final Enemy enemy = (Enemy) o;
-    return getWeight() == enemy.getWeight();
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Enemy enemy = (Enemy) o;
+    return weight == enemy.weight &&
+            Objects.equals(name, enemy.getName()) &&
+            characterClass == enemy.getCharacterClass();
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getWeight());
+    return Objects.hash(weight);
   }
 }

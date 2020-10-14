@@ -7,5 +7,5 @@ package com.github.Ephyy.finalreality.model.character.player;
  * @author Ignacio Slater Muñoz.
  * @author Vicente Ardiles Silva.
  */
-public interface IMage {
+public interface IMage extends IPlayerCharacter {
 }

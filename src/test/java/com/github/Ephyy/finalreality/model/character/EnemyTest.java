@@ -1,25 +1,31 @@
 package com.github.Ephyy.finalreality.model.character;
 
-import com.github.Ephyy.finalreality.model.character.player.CharacterClass;
-import com.github.Ephyy.finalreality.model.character.player.AbstractPlayerCharacter;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Class that test an enemy character.
+ *
+ * @author Ignacio Slater Muñoz.
+ * @author Vicente Ardiles Silva.
+ */
 class EnemyTest extends AbstractCharacterTest {
 
-  private static final String ENEMY_NAME = "Goblin";
-
   @BeforeEach
-  void setUp() {
-    basicSetUp();
-    testCharacters.add(new Enemy(ENEMY_NAME, 10, turns));
+  public void setUp() {
+    super.init();
+    testEnemy = getEnemy(ENEMY_NAME,10);
+    testCharacters.add(testEnemy);
+    testCharacters.add(testPlayer);
   }
 
+  @Override
   @Test
-  void constructorTest() {
-    checkConstruction(new Enemy(ENEMY_NAME, 10, turns),
-        testCharacters.get(0),
-        new Enemy(ENEMY_NAME, 11, turns),
-        new AbstractPlayerCharacter(ENEMY_NAME, turns, CharacterClass.THIEF));
+  public void constructorTest() {
+    checkEqualsConstruction(getEnemy(ENEMY_NAME, 10));
+    checkNotEqualsConstruction(getEnemy(ENEMY_NAME, 11));
+    checkNotEqualsConstruction(getEnemy("Skeleton", 10));
+    checkNotEqualsConstruction(getCharacter(CharacterClass.THIEF));
   }
 }
