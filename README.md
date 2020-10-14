@@ -71,6 +71,14 @@ esencia de ser un arma, por lo que cada clase que representan los diferentes
 tipos de armas heredan de *AbstractWeapon* ,que implementa la interfaz *IWeapon*, agrupando todas las
 características propias de lo que es un arma dentro del juego.
 
+## Supuestos Tarea1
+- Se considera que los Thief pueden usar Knife
+- En esta tarea se considera que los personajes tiene un "tipo" pero esto sera
+modificado en la tarea 2 debido a que cada clase sabe que tipo es (DD cof cof).
+- Se interpreta que del enunciado los personajes siempre tienen un arma, no existe el estar
+desarmado, por lo que un personaje no tiene arma nula (por ahora, se sigue analizando) 
+por lo que al crearlos si o si se deben colocar con un arma.
+
 ## Getting Started
 
 ### Prerequisites
