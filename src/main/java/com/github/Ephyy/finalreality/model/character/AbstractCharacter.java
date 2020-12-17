@@ -1,13 +1,13 @@
 package com.github.Ephyy.finalreality.model.character;
 
-import java.util.Objects;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import com.github.Ephyy.finalreality.model.character.player.IPlayerCharacter;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * An abstract class that holds the common behaviour of all the characters in the game.
@@ -17,13 +17,16 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class AbstractCharacter implements ICharacter {
 
+  protected final PropertyChangeSupport deadEvent = new PropertyChangeSupport(this);
+  protected final PropertyChangeSupport turnEvent = new PropertyChangeSupport(this);
+
   protected final BlockingQueue<ICharacter> turnsQueue;
   protected final String name;
-  protected final CharacterClass characterClass;
-  protected final int hp;
-  protected final int atk;
-  protected final int def;
-  private ScheduledExecutorService scheduledExecutor;
+  protected int hp;
+  protected int atk;
+  protected int def;
+  protected boolean life;
+  protected ScheduledExecutorService scheduledExecutor;
 
   /**
    * Creates a new character.
@@ -32,8 +35,6 @@ public abstract class AbstractCharacter implements ICharacter {
    *     the character's name
    * @param turnsQueue
    *     the queue with the characters waiting for their turn
-   * @param characterClass
-   *     the class of this character
    * @param hp
    *     the health point of this character
    * @param atk
@@ -41,38 +42,66 @@ public abstract class AbstractCharacter implements ICharacter {
    * @param def
    *     the defense point of this character
    */
-  public AbstractCharacter(BlockingQueue<ICharacter> turnsQueue, String name,
-                           CharacterClass characterClass, int hp, int atk, int def) {
+  public AbstractCharacter(BlockingQueue<ICharacter> turnsQueue, String name, int hp, int atk,
+                           int def) {
     this.turnsQueue = turnsQueue;
     this.name = name;
-    this.characterClass = characterClass;
     this.hp = hp;
     this.atk = atk;
     this.def = def;
+    this.life = true;
   }
 
-  // Hay que usar DD aqui, asi que esto esta incorrecto
   @Override
-  public void waitTurn() {
-    scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
-    if (this instanceof IPlayerCharacter) {
-      var player = (IPlayerCharacter) this;
-      scheduledExecutor
-              .schedule(this::addToQueue,
-                      player.getEquippedWeapon().getWeight() / 10, TimeUnit.SECONDS);
-    } else {
-      var enemy = (Enemy) this;
-      scheduledExecutor
-          .schedule(this::addToQueue, enemy.getWeight() / 10, TimeUnit.SECONDS);
-    }
+  public void addDeathListener(PropertyChangeListener listener) {
+    deadEvent.addPropertyChangeListener(listener);
   }
+
+  @Override
+  public void addTurnListener(PropertyChangeListener listener) {
+    turnEvent.addPropertyChangeListener(listener);
+  }
+
+  protected void startTurn() {
+    turnEvent.firePropertyChange("CharacterReady", null, this);
+  }
+
+  protected void endTurn() {
+    turnEvent.firePropertyChange("TurnEnded", null, this);
+  }
+
+  protected void die() {
+    deadEvent.firePropertyChange(name + " has died", null, this);
+  }
+
+  @Override
+  public abstract void waitTurn();
 
   /**
    * Adds this character to the turns queue.
    */
-  private void addToQueue() {
+  protected void addToQueue() {
     turnsQueue.add(this);
     scheduledExecutor.shutdown();
+    startTurn();
+  }
+
+  @Override
+  public abstract void attack(ICharacter opponent);
+
+  protected boolean canAttack(ICharacter opponent) {
+    return opponent.isAlive() && this.isAlive();
+  }
+
+  @Override
+  public boolean isAlive() {
+    return life;
+  }
+
+  @Override
+  public void setLifeDead() {
+    this.hp = 0;
+    this.life = false;
   }
 
   @Override
@@ -81,7 +110,17 @@ public abstract class AbstractCharacter implements ICharacter {
   }
 
   @Override
-  public CharacterClass getCharacterClass() {
-    return characterClass;
+  public int getHp() {
+    return this.hp;
+  }
+
+  @Override
+  public int getAtk() {
+    return this.atk;
+  }
+
+  @Override
+  public int getDef() {
+    return def;
   }
 }

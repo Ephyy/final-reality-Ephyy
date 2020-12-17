@@ -13,14 +13,21 @@ public class SwordTest extends AbstractWeaponTest {
    */
   @BeforeEach
   void setUp() {
+    super.setUp();
     testWeapon = getWeapon(WeaponType.SWORD);
+    testDifferentWeapon = getWeaponWith(WeaponType.SWORD, 30, 15);
+    correctCharacters.add(testKnight);
+    correctCharacters.add(testThief);
+    incorrectCharacters.add(testEngineer);
+    incorrectCharacters.add(testBlackMage);
+    incorrectCharacters.add(testWhiteMage);
   }
 
   @Override
   @Test
   public void constructorTest() {
     checkEqualsConstruction(getWeapon(WeaponType.SWORD));
-    checkNotEqualsConstruction(new Sword(SWORD_NAME, 50, 12, WeaponType.SWORD));
+    checkNotEqualsConstruction(new Sword(SWORD_NAME, 50, 12));
     checkNotEqualsConstruction(getWeapon(WeaponType.BOW));
   }
 }

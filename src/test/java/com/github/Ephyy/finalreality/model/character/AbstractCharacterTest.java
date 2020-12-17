@@ -4,6 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.github.Ephyy.finalreality.model.character.player.*;
+import com.github.Ephyy.finalreality.model.character.player.classes.common.Engineer;
+import com.github.Ephyy.finalreality.model.character.player.classes.common.Knight;
+import com.github.Ephyy.finalreality.model.character.player.classes.common.Thief;
+import com.github.Ephyy.finalreality.model.character.player.classes.magic.BlackMage;
+import com.github.Ephyy.finalreality.model.character.player.classes.magic.WhiteMage;
 import com.github.Ephyy.finalreality.model.weapon.*;
 
 import java.util.ArrayList;
@@ -22,7 +27,6 @@ import org.junit.jupiter.api.Test;
  * @see ICharacter
  */
 public abstract class AbstractCharacterTest {
-
 
   protected static final String BLACK_MAGE_NAME = "Vivi";
   protected static final String KNIGHT_NAME = "Adelbert";
@@ -82,19 +86,6 @@ public abstract class AbstractCharacterTest {
     }
   }
 
-  protected void checkConstruction(final ICharacter expectedCharacter,
-      final ICharacter testEqualCharacter,
-      final ICharacter sameClassDifferentCharacter,
-      final ICharacter differentClassCharacter) {
-    assertEquals(testEqualCharacter, testEqualCharacter);
-    assertEquals(expectedCharacter, testEqualCharacter);
-    assertEquals(expectedCharacter.hashCode(), testEqualCharacter.hashCode());
-    assertNotEquals(sameClassDifferentCharacter, testEqualCharacter);
-    assertNotEquals(testEqualCharacter, differentClassCharacter);
-    assertNotEquals(testEqualCharacter, null);
-    assertNotEquals(testEqualCharacter, new Object());
-  }
-
   protected void checkEqualsConstruction(final ICharacter expectedCharacter) {
     assertEquals(testCharacters.get(0), testCharacters.get(0));
     assertEquals(expectedCharacter, testCharacters.get(0));
@@ -109,51 +100,47 @@ public abstract class AbstractCharacterTest {
 
   protected void basicSetUp() {
     turns = new LinkedBlockingQueue<>();
-    testWeapon = new Axe("Test", 15, 10, WeaponType.AXE);
+    testWeapon = new Axe("Test", 15, 10);
+    testEnemy = getEnemy(ENEMY_NAME,10);
     testCharacters = new ArrayList<>();
   }
 
-  protected ICharacter getCharacter(CharacterClass characterClass) {
-    switch (characterClass) {
-      case ENEMY: return getEnemy(ENEMY_NAME, 10);
+  protected IPlayerCharacter getPlayerCharacterWith(CharacterClass playerClass, int hp, int atk,
+                                                    int def) {
+    switch (playerClass) {
+      case KNIGHT:
+        return new Knight(turns, KNIGHT_NAME, hp, atk, def,
+                testSword);
+      case ENGINEER:
+        return new Engineer(turns, ENGINEER_NAME, hp, atk, def, testAxe);
+      case THIEF:
+        return new Thief(turns, THIEF_NAME, hp, atk, def, testKnife);
+      case BLACK_MAGE:
+        return new BlackMage(turns, BLACK_MAGE_NAME, hp, atk, def,
+                testStaff,50);
+      // In the future default can 'catch' an unexpected value.
       default:
-        return getPlayerCharacter(characterClass);
+        return new WhiteMage(turns, WHITE_MAGE_NAME, hp, atk, def,
+                testStaff,50);
     }
   }
 
   protected IPlayerCharacter getPlayerCharacter(CharacterClass playerClass) {
-    switch (playerClass) {
-      case KNIGHT:
-        return new Knight(turns, KNIGHT_NAME, CharacterClass.KNIGHT, TEST_HP, TEST_ATK, TEST_DEF,
-                testSword);
-      case ENGINEER:
-        return new Engineer(turns, ENGINEER_NAME, CharacterClass.ENGINEER, TEST_HP, TEST_ATK,
-                TEST_DEF, testAxe);
-      case THIEF:
-        return new Thief(turns, THIEF_NAME, CharacterClass.THIEF, TEST_HP, TEST_ATK, TEST_DEF,
-                testKnife);
-      case BLACK_MAGE:
-        return new BlackMage(turns, BLACK_MAGE_NAME, CharacterClass.BLACK_MAGE, TEST_HP, TEST_ATK,
-                TEST_DEF, testStaff,50);
-      // In the future default can 'catch' an unexpected value.
-      default:
-        return new WhiteMage(turns, WHITE_MAGE_NAME, CharacterClass.WHITE_MAGE, TEST_HP, TEST_ATK,
-                TEST_DEF, testStaff,50);
-    }
+    return getPlayerCharacterWith(playerClass, TEST_HP, TEST_ATK, TEST_DEF);
   }
 
   protected Enemy getEnemy(String name, int weight) {
-    return new Enemy(turns, name, CharacterClass.ENEMY, TEST_HP, TEST_ATK, TEST_DEF, weight);
+    return new Enemy(turns, name, TEST_HP, TEST_ATK, TEST_DEF, weight);
   }
 
   /**
    * Creates a set of testing weapons
    */
   private void setWeapons() {
-    this.testSword = new Sword("Axe", 15, 10, WeaponType.SWORD);
-    this.testAxe = new Axe("Sword", 15, 10, WeaponType.AXE);
-    this.testKnife = new Knife("Spear", 15, 10, WeaponType.KNIFE);
-    this.testStaff = new Staff("Staff", 15, 10, WeaponType.STAFF);
-    this.testBow = new Bow("Bow", 15, 10, WeaponType.BOW);
+    this.testSword = new Sword("Axe", 15, 10);
+    this.testAxe = new Axe("Sword", 15, 10);
+    this.testKnife = new Knife("Spear", 15, 10);
+    this.testStaff = new Staff("Staff", 15, 10);
+    this.testBow = new Bow("Bow", 15, 10);
   }
 }
