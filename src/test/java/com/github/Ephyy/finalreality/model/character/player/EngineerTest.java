@@ -1,6 +1,7 @@
 package com.github.Ephyy.finalreality.model.character.player;
 
 import com.github.Ephyy.finalreality.model.character.CharacterClass;
+import com.github.Ephyy.finalreality.model.character.player.classes.common.Engineer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,14 +27,8 @@ class EngineerTest extends AbstractPlayerCharacterTest {
   @Test
   public void constructorTest() {
     checkEqualsConstruction(getPlayerCharacter(CharacterClass.ENGINEER));
-    checkNotEqualsConstruction(new Engineer(turns, ENGINEER_NAME, CharacterClass.ENGINEER, TEST_HP,
-            TEST_ATK, TEST_DEF, testBow));
-    checkNotEqualsConstruction(getCharacter(CharacterClass.THIEF));
-  }
-
-  @Override
-  @Test
-  public void equipWeaponTest() {
-    equipWeapon(testAxe);
+    checkNotEqualsConstruction(new Engineer(turns, ENGINEER_NAME, TEST_HP, TEST_ATK, TEST_DEF,
+            testBow));
+    checkNotEqualsConstruction(getPlayerCharacter(CharacterClass.THIEF));
   }
 }

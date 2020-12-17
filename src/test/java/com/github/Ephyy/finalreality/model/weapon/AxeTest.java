@@ -1,6 +1,5 @@
 package com.github.Ephyy.finalreality.model.weapon;
 
-import com.github.Ephyy.finalreality.model.character.player.Knight;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,16 +16,22 @@ public class AxeTest extends AbstractWeaponTest {
    */
   @BeforeEach
   void setUp() {
+    super.setUp();
     testWeapon = getWeapon(WeaponType.AXE);
+    testDifferentWeapon = getWeaponWith(WeaponType.AXE, 30, 15);
+    correctCharacters.add(testKnight);
+    correctCharacters.add(testEngineer);
+    incorrectCharacters.add(testThief);
+    incorrectCharacters.add(testBlackMage);
+    incorrectCharacters.add(testWhiteMage);
   }
 
   @Override
   @Test
   public void constructorTest() {
     checkEqualsConstruction(getWeapon(WeaponType.AXE));
-    checkNotEqualsConstruction(new Axe(AXE_NAME, 11, WEIGHT, WeaponType.AXE));
-    checkNotEqualsConstruction(new Axe(AXE_NAME, DAMAGE, 11, WeaponType.AXE));
-    checkNotEqualsConstruction(new Axe(AXE_NAME, DAMAGE, WEIGHT, WeaponType.BOW));
+    checkNotEqualsConstruction(getWeaponWith(WeaponType.AXE, 11, WEIGHT));
+    checkNotEqualsConstruction(getWeaponWith(WeaponType.AXE, DAMAGE, 11));
     checkNotEqualsConstruction(getWeapon(WeaponType.BOW));
   }
 }

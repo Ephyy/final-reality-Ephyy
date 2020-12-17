@@ -1,6 +1,7 @@
 package com.github.Ephyy.finalreality.model.character.player;
 
 import com.github.Ephyy.finalreality.model.character.CharacterClass;
+import com.github.Ephyy.finalreality.model.character.player.classes.common.Knight;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,14 +27,8 @@ class KnightTest extends AbstractPlayerCharacterTest {
   @Test
   public void constructorTest() {
     checkEqualsConstruction(getPlayerCharacter(CharacterClass.KNIGHT));
-    checkNotEqualsConstruction(new Knight(turns, KNIGHT_NAME, CharacterClass.KNIGHT, TEST_HP,
-            TEST_ATK, TEST_DEF, testAxe));
-    checkNotEqualsConstruction(getCharacter(CharacterClass.THIEF));
-  }
-
-  @Override
-  @Test
-  public void equipWeaponTest() {
-    equipWeapon(testSword);
+    checkNotEqualsConstruction(new Knight(turns, KNIGHT_NAME, TEST_HP, TEST_ATK, TEST_DEF,
+            testAxe));
+    checkNotEqualsConstruction(getPlayerCharacter(CharacterClass.THIEF));
   }
 }

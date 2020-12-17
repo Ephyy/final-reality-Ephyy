@@ -51,6 +51,9 @@ puede ser usada o no como se muestra en la siguiente tabla:
 Donde los puntos señalan las armas que el personaje puede portar. Cabe mencionar que los enemigos 
 no pueden usarlas.
 
+#### Controller (ETAPA II)
+Es lo más cercano que tenemos hasta ahora de la logística del juego, más para representar la dinamica del mismo solo es viable vía test.
+
 ### Design patterns
 
 #### Clases abstractas e interfaces
@@ -71,13 +74,27 @@ esencia de ser un arma, por lo que cada clase que representan los diferentes
 tipos de armas heredan de *AbstractWeapon* ,que implementa la interfaz *IWeapon*, agrupando todas las
 características propias de lo que es un arma dentro del juego.
 
-## Supuestos Tarea1
+#### Double Dispatch
+Para poder equipar armas y respetar que se hace de forma correcta como es presentado en la tabla, se utiliza 
+este patron de diseño para no tener que preguntar de forma directa por el tipo del personaje a equipar. 
+De igual forma, en el ataque entre personajes
+se desambigua el tipo de estos utilizando el patron debido a que el cálculo de daño es diferente entre enemigos y personajes
+del jugador.
+
+#### Observer Pattern
+Para que el controlador sepa cuando un personaje empieza y termina su turno, se utiliza observer para notificar
+desde el modelo cuando los personajes realizaron una acción (fin del turno) y cuando el temporizador
+interno de ellos llego a 0 y entran en la cola de turno (inicio del turno).
+
+De forma similar, cuando un personaje muere en combate, esto es notificado al controlador y
+verifica si todas las unidades del jugador o del enemigo han muerto de forma de poder determinar si existe
+algún ganador.
+
+
+
+## Supuestos Tarea
 - Se considera que los Thief pueden usar Knife
-- En esta tarea se considera que los personajes tiene un "tipo" pero esto sera
-modificado en la tarea 2 debido a que cada clase sabe que tipo es (DD cof cof).
-- Se interpreta que del enunciado los personajes siempre tienen un arma, no existe el estar
-desarmado, por lo que un personaje no tiene arma nula (por ahora, se sigue analizando) 
-por lo que al crearlos si o si se deben colocar con un arma.
+- Existe Friendly fire debido a que es más extensible si es que uno quisiera tener dos bandos con jugadores.
 
 ## Getting Started
 

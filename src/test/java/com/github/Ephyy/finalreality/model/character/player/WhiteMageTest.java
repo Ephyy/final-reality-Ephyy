@@ -1,6 +1,7 @@
 package com.github.Ephyy.finalreality.model.character.player;
 
 import com.github.Ephyy.finalreality.model.character.CharacterClass;
+import com.github.Ephyy.finalreality.model.character.player.classes.magic.WhiteMage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,14 +27,8 @@ class WhiteMageTest extends AbstractPlayerCharacterTest {
   @Test
   public void constructorTest() {
     checkEqualsConstruction(getPlayerCharacter(CharacterClass.WHITE_MAGE));
-    checkNotEqualsConstruction(new WhiteMage(turns, WHITE_MAGE_NAME, CharacterClass.WHITE_MAGE,
-            TEST_HP, TEST_ATK, TEST_DEF, testStaff, 100));
-    checkNotEqualsConstruction(getCharacter(CharacterClass.THIEF));
-  }
-
-  @Override
-  @Test
-  public void equipWeaponTest() {
-    equipWeapon(testStaff);
+    checkNotEqualsConstruction(new WhiteMage(turns, WHITE_MAGE_NAME, TEST_HP, TEST_ATK, TEST_DEF,
+            testStaff, 100));
+    checkNotEqualsConstruction(getPlayerCharacter(CharacterClass.THIEF));
   }
 }

@@ -1,5 +1,7 @@
 package com.github.Ephyy.finalreality.model.weapon;
 
+import com.github.Ephyy.finalreality.model.character.player.IPlayerCharacter;
+
 /**
  * This represents a Weapon in the game.
  * A weapon only can be equipped for the player characters
@@ -8,6 +10,11 @@ package com.github.Ephyy.finalreality.model.weapon;
  * @author Vicente Ardiles Silva.
  */
 public interface IWeapon {
+
+  /**
+   * Equips a weapon to the character.
+   */
+  void equipWeapon(IPlayerCharacter playerCharacter);
 
   /**
    * Returns this Weapon's name.

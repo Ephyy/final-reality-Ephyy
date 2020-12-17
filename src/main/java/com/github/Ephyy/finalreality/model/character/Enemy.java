@@ -2,7 +2,10 @@ package com.github.Ephyy.finalreality.model.character;
 
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
-import org.jetbrains.annotations.NotNull;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import com.github.Ephyy.finalreality.model.character.player.IPlayerCharacter;
 
 /**
  * A class that holds all the information of a single enemy of the game.
@@ -10,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Ignacio Slater Muñoz.
  * @author Vicente Ardiles Silva.
  */
-public class Enemy extends AbstractCharacter {
+public class Enemy extends AbstractCharacter implements ICharacter {
 
   private final int weight;
 
@@ -18,10 +21,32 @@ public class Enemy extends AbstractCharacter {
    * Creates a new enemy with a name, a weight and the queue with the characters ready to
    * play.
    */
-  public Enemy(BlockingQueue<ICharacter> turnsQueue, String name, CharacterClass characterClass,
-               int hp, int atk, int def, int weight) {
-    super(turnsQueue, name, characterClass, hp, atk, def);
+  public Enemy(BlockingQueue<ICharacter> turnsQueue, String name, int hp, int atk, int def,
+               int weight) {
+    super(turnsQueue, name, hp, atk, def);
     this.weight = weight;
+  }
+
+  @Override
+  public void attack(ICharacter opponent) {
+    if (this.canAttack(opponent)) {
+      opponent.receiveEnemyAttack(this);
+      endTurn();
+    }
+  }
+
+  @Override
+  public void receiveEnemyAttack(Enemy enemyAttacker) {
+  }
+
+  @Override
+  public void receivePlayerAttack(IPlayerCharacter playerAttacker) {
+    int incomingDamage = playerAttacker.getAtk() + playerAttacker.getEquippedWeapon().getDamage();
+    this.hp -= incomingDamage - this.def;
+    if (this.getHp() <= 0) {
+      this.setLifeDead();
+      die();
+    }
   }
 
   /**
@@ -31,6 +56,14 @@ public class Enemy extends AbstractCharacter {
     return weight;
   }
 
+  @Override
+  public void waitTurn() {
+    scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
+    var enemy = (Enemy) this;
+    scheduledExecutor
+            .schedule(this::addToQueue, enemy.getWeight() / 10, TimeUnit.SECONDS);
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -38,8 +71,7 @@ public class Enemy extends AbstractCharacter {
     if (o == null || getClass() != o.getClass()) return false;
     Enemy enemy = (Enemy) o;
     return weight == enemy.weight &&
-            Objects.equals(name, enemy.getName()) &&
-            characterClass == enemy.getCharacterClass();
+            Objects.equals(name, enemy.getName());
   }
 
   @Override

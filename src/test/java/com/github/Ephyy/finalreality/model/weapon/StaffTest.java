@@ -14,14 +14,21 @@ public class StaffTest extends AbstractWeaponTest {
    */
   @BeforeEach
   void setUp() {
+    super.setUp();
     testWeapon = getWeapon(WeaponType.STAFF);
+    testDifferentWeapon = getWeaponWith(WeaponType.STAFF, 30, 15);
+    correctCharacters.add(testBlackMage);
+    correctCharacters.add(testWhiteMage);
+    incorrectCharacters.add(testKnight);
+    incorrectCharacters.add(testEngineer);
+    incorrectCharacters.add(testThief);
   }
 
   @Override
   @Test
   public void constructorTest() {
     checkEqualsConstruction(getWeapon(WeaponType.STAFF));
-    checkNotEqualsConstruction(new Staff(STAFF_NAME, 11, 11, WeaponType.STAFF));
+    checkNotEqualsConstruction(new Staff(STAFF_NAME, 11, 11));
     checkNotEqualsConstruction(getWeapon(WeaponType.BOW));
   }
 }

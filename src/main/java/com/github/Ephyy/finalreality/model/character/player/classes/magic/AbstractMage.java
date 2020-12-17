@@ -1,9 +1,9 @@
-package com.github.Ephyy.finalreality.model.character.player;
+package com.github.Ephyy.finalreality.model.character.player.classes.magic;
 
-import com.github.Ephyy.finalreality.model.character.CharacterClass;
 import com.github.Ephyy.finalreality.model.character.ICharacter;
+import com.github.Ephyy.finalreality.model.character.player.AbstractPlayerCharacter;
 import com.github.Ephyy.finalreality.model.weapon.IWeapon;
-import org.jetbrains.annotations.NotNull;
+import com.github.Ephyy.finalreality.model.weapon.Staff;
 
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
@@ -21,11 +21,20 @@ public class AbstractMage extends AbstractPlayerCharacter implements IMage {
   /**
    * Create a mage character with a name, mage class and the mana that will have.
    */
-  public AbstractMage(BlockingQueue<ICharacter> turnsQueue, String name,
-                      CharacterClass characterClass, int hp, int atk, int def,
+  public AbstractMage(BlockingQueue<ICharacter> turnsQueue, String name, int hp, int atk, int def,
                       IWeapon equippedWeapon, int mana) {
-    super(turnsQueue, name, characterClass, hp, atk, def, equippedWeapon);
+    super(turnsQueue, name, hp, atk, def, equippedWeapon);
     this.mana = mana;
+  }
+
+  @Override
+  public void equipStaff(Staff staff) {
+    this.equippedWeapon = staff;
+  }
+
+  @Override
+  public int getMana() {
+    return mana;
   }
 
   @Override
@@ -35,8 +44,7 @@ public class AbstractMage extends AbstractPlayerCharacter implements IMage {
     AbstractMage that = (AbstractMage) o;
     return mana == that.mana &&
             Objects.equals(equippedWeapon, that.equippedWeapon) &&
-            Objects.equals(name, that.getName()) &&
-            characterClass == that.getCharacterClass();
+            Objects.equals(name, that.getName());
   }
 
   @Override

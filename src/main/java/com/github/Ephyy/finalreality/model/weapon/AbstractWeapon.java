@@ -1,5 +1,7 @@
 package com.github.Ephyy.finalreality.model.weapon;
 
+import com.github.Ephyy.finalreality.model.character.player.IPlayerCharacter;
+
 import java.util.Objects;
 
 /**
@@ -13,20 +15,22 @@ public abstract class AbstractWeapon implements IWeapon {
   private final String name;
   private final int damage;
   private final int weight;
-  private final WeaponType type;
 
   /**
    * Creates a weapon with a name, a base damage, speed and it's type.
-   *
-   * @see WeaponType
    */
-  public AbstractWeapon(final String name, final int damage, final int weight,
-                        final WeaponType type) {
+  public AbstractWeapon(final String name, final int damage, final int weight) {
     this.name = name;
     this.damage = damage;
     this.weight = weight;
-    this.type = type; // esto probablemente se ira
   }
+
+  protected boolean canEquip(IPlayerCharacter playerCharacter) {
+    return playerCharacter.isAlive();
+  }
+
+  @Override
+  public abstract void equipWeapon(IPlayerCharacter playerCharacter);
 
   @Override
   public String getName() {
@@ -43,10 +47,6 @@ public abstract class AbstractWeapon implements IWeapon {
     return weight;
   }
 
-  private WeaponType getType() {
-    return type;
-  }
-
   @Override
   public boolean equals(final Object o) {
     if (this == o) {
@@ -58,12 +58,11 @@ public abstract class AbstractWeapon implements IWeapon {
     final AbstractWeapon weapon = (AbstractWeapon) o;
     return getDamage() == weapon.getDamage() &&
         getWeight() == weapon.getWeight() &&
-        getName().equals(weapon.getName()) &&
-        getType() == weapon.getType();
+        getName().equals(weapon.getName());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getName(), getDamage(), getWeight(), getType());
+    return Objects.hash(getName(), getDamage(), getWeight());
   }
 }

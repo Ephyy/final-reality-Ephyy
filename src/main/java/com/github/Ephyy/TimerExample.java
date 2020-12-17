@@ -1,12 +1,9 @@
 package com.github.Ephyy;
 
 import com.github.Ephyy.finalreality.model.character.ICharacter;
-import com.github.Ephyy.finalreality.model.character.CharacterClass;
-import com.github.Ephyy.finalreality.model.character.player.AbstractPlayerCharacter;
-import com.github.Ephyy.finalreality.model.character.player.Thief;
-import com.github.Ephyy.finalreality.model.weapon.AbstractWeapon;
+import com.github.Ephyy.finalreality.model.character.player.classes.common.Thief;
 import com.github.Ephyy.finalreality.model.weapon.Knife;
-import com.github.Ephyy.finalreality.model.weapon.WeaponType;
+
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -21,10 +18,10 @@ public class TimerExample {
     Random rng = new Random();
     for (int i = 0; i < 10; i++) {
       // Gives a random speed to each character to generate different waiting times
-      var weapon = new Knife("", 0, rng.nextInt(50), WeaponType.KNIFE);
-      var character = new Thief(queue, Integer.toString(i),
-              CharacterClass.THIEF, 100, 10, 5, null);
-      character.equip(weapon);
+      var weapon = new Knife("", 0, rng.nextInt(50));
+      var character = new Thief(queue, Integer.toString(i), 100, 10, 5,
+              null);
+      weapon.equipWeapon(character);
       character.waitTurn();
     }
     // Waits for 6 seconds to ensure that all characters have finished waiting
