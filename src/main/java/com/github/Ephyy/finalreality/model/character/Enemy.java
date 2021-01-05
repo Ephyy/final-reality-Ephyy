@@ -64,6 +64,11 @@ public class Enemy extends AbstractCharacter implements ICharacter {
             .schedule(this::addToQueue, enemy.getWeight() / 10, TimeUnit.SECONDS);
   }
 
+  @Override
+  public boolean isPlayerCharacter() {
+    return false;
+  }
+
 
   @Override
   public boolean equals(Object o) {

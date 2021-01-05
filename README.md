@@ -90,7 +90,10 @@ De forma similar, cuando un personaje muere en combate, esto es notificado al co
 verifica si todas las unidades del jugador o del enemigo han muerto de forma de poder determinar si existe
 algún ganador.
 
-
+#### State Pattern
+Este patrón es utilizado para manejar los diferentes turnos que hay entre los ataques del personaje del jugador
+y los personajes enemigos. Adicionalmente, crear fases de decisiones donde el jugador tiene la posibilidad de 
+atacar o cambiar el arma del personaje que está manejado en su respectivo turno.
 
 ## Supuestos Tarea
 - Se considera que los Thief pueden usar Knife
