@@ -125,8 +125,7 @@ Para correr todos los tests del proyecto se debe ejecutar la carpeta.
 
 ## Deployment
 Por ahora el proyecto no tiene una forma de ser ejecutado debido a que solo está conformado por
-los modelos y funcionalidades que seran utilizadas en las próximas entregas pero todo se encuentra
-testeado.
+los modelos y el controlador sin la parte visual, pero se asegura su correcto funcionamiento debidamente testeado.
 
 ## Built With
 
