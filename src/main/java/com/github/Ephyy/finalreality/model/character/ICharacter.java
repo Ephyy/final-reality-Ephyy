@@ -79,4 +79,9 @@ public interface ICharacter {
    * Returns this character's defense
    */
   int getDef();
+
+  /**
+   * Return
+   */
+  boolean isPlayerCharacter();
 }

@@ -30,6 +30,7 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
     this.equippedWeapon = equippedWeapon;
   }
 
+  @Override
   public void attack(ICharacter enemyOpponent) {
     if (this.canAttack(enemyOpponent)) {
       enemyOpponent.receivePlayerAttack(this);
@@ -37,6 +38,7 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
     }
   }
 
+  @Override
   public void receiveEnemyAttack(Enemy enemyAttacker) {
     this.hp -= enemyAttacker.getAtk() - this.def;
     if (this.getHp() <= 0) {
@@ -45,6 +47,7 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
     }
   }
 
+  @Override
   public void receivePlayerAttack(IPlayerCharacter playerAttacker) {
   }
 
@@ -68,6 +71,11 @@ public abstract class AbstractPlayerCharacter extends AbstractCharacter
     scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
     scheduledExecutor.schedule(this::addToQueue,
             this.getEquippedWeapon().getWeight() / 10, TimeUnit.SECONDS);
+  }
+
+  @Override
+  public boolean isPlayerCharacter() {
+    return true;
   }
 
   @Override

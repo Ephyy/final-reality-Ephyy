@@ -81,9 +81,11 @@ public abstract class AbstractCharacter implements ICharacter {
    * Adds this character to the turns queue.
    */
   protected void addToQueue() {
-    turnsQueue.add(this);
-    scheduledExecutor.shutdown();
-    startTurn();
+    if (this.isAlive()) {
+      turnsQueue.add(this);
+      scheduledExecutor.shutdown();
+      startTurn();
+    }
   }
 
   @Override
@@ -123,4 +125,7 @@ public abstract class AbstractCharacter implements ICharacter {
   public int getDef() {
     return def;
   }
+
+  @Override
+  public abstract boolean isPlayerCharacter();
 }

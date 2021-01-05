@@ -3,6 +3,9 @@ package com.github.Ephyy.finalreality.controller;
 import com.github.Ephyy.finalreality.controller.handler.DeadCharacterHandler;
 import com.github.Ephyy.finalreality.controller.handler.CharacterTurnHandler;
 import com.github.Ephyy.finalreality.controller.handler.IEventHandler;
+import com.github.Ephyy.finalreality.controller.phase.InvalidTransitionException;
+import com.github.Ephyy.finalreality.controller.phase.Phase;
+import com.github.Ephyy.finalreality.controller.phase.TurnBeginningPhase;
 import com.github.Ephyy.finalreality.model.character.Enemy;
 import com.github.Ephyy.finalreality.model.character.ICharacter;
 import com.github.Ephyy.finalreality.model.character.player.IPlayerCharacter;
@@ -16,6 +19,7 @@ import com.github.Ephyy.finalreality.model.weapon.IWeapon;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -36,7 +40,11 @@ public class GameController {
   private List<ICharacter> party;
   private List<IWeapon> inventory;
   private List<ICharacter> enemies;
-  protected final BlockingQueue<ICharacter> turnsQueue;
+  private final BlockingQueue<ICharacter> turnsQueue;
+  private Phase phase;
+  private ICharacter currentCharacter;
+  private Random random;
+  private int targetIndex;
 
   /**
    * Creates the controller for a new game.
@@ -51,6 +59,8 @@ public class GameController {
     this.inventory = new ArrayList<>();
     this.enemies = new ArrayList<>();
     this.turnsQueue = new LinkedBlockingQueue<>();
+    this.random = new Random();
+    this.setPhase(new TurnBeginningPhase());
   }
 
   /**
@@ -59,6 +69,7 @@ public class GameController {
    * @param character the character who is ready to make an action.
    */
   public void onCharacterReady(ICharacter character) {
+    phase.characterReady();
   }
 
   /**
@@ -69,6 +80,7 @@ public class GameController {
   public void onTurnEnded(ICharacter character) {
     turnsQueue.remove(character);
     character.waitTurn();
+    phase.turnEnded();
   }
 
   /**
@@ -77,6 +89,7 @@ public class GameController {
    * @param deadCharacter the character who died.
    */
   public void onCharacterDied(ICharacter deadCharacter) {
+    turnsQueue.remove(deadCharacter);
     if (charactersDefeated(party)) {
       enemyVictory();
     }
@@ -95,9 +108,11 @@ public class GameController {
   }
 
   private void enemyVictory() {
+    phase.enemyVictory();
   }
 
   private void playerVictory() {
+    phase.playerVictory();
   }
 
   /**
@@ -113,7 +128,7 @@ public class GameController {
   /**
    * Equip a weapon to a player character.
    *
-   * @param weapon the waeapon the weapon that will be equipped
+   * @param weapon the weapon the weapon that will be equipped
    * @param playerCharacter the player character who will equip the weapon.
    */
   public void equipWeapon(IWeapon weapon, IPlayerCharacter playerCharacter) {
@@ -189,6 +204,14 @@ public class GameController {
    */
   public int getMageMana(IMage mage) {
     return mage.getMana();
+  }
+
+  /**
+   * @param character the character that want to know its status.
+   * @return status of the character.
+   */
+  public boolean isCharacterAlive(ICharacter character) {
+    return character.isAlive();
   }
 
   /**
@@ -303,7 +326,7 @@ public class GameController {
    * @param hp the health point of the character
    * @param atk the attack of the character
    * @param def the defense of the character
-   * @param weight
+   * @param weight the weight of the enemy character
    * @return the new enemy created
    */
   public Enemy newEnemy(int hp, int atk, int def, int weight) {
@@ -318,5 +341,134 @@ public class GameController {
    */
   public BlockingQueue<ICharacter> getTurnsQueue() {
     return turnsQueue;
+  }
+
+  /**
+   * Set the current character that its attacking
+   * @param currentCharacter character that will attack
+   */
+  public void setCurrentCharacter(ICharacter currentCharacter) {
+    this.currentCharacter = currentCharacter;
+  }
+
+  /**
+   * @return character who's attacking
+   */
+  public ICharacter getCurrentCharacter() {
+    return currentCharacter;
+  }
+
+  /**
+   * Prepare all the characters to start the game
+   */
+  public void startGame() {
+    prepareCharacterParty(getParty());
+    prepareCharacterParty(getEnemies());
+  }
+
+  private void prepareCharacterParty(List<ICharacter> characterParty) {
+    for (ICharacter character : characterParty) {
+      character.waitTurn();
+    }
+  }
+
+  /**
+   * Set the phase that will take place the game.
+   * @param phase the new phase
+   */
+  public void setPhase(final Phase phase) {
+    this.phase = phase;
+    phase.setController(this);
+  }
+
+  /**
+   * Start a new turn of the game
+   */
+  public void tryToStartTurn() {
+    try {
+      phase.beginningTurn();
+    } catch (InvalidTransitionException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Make th decision to attack an Enemy
+   */
+  public void tryAttackDecision() {
+    try {
+      phase.attackDecision();
+    } catch (InvalidTransitionException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void tryChangeWeaponDecision(IWeapon newWeapon) {
+    try {
+      phase.changeWeaponDecision(newWeapon);
+    } catch (InvalidTransitionException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Try to attack the selected target
+   */
+  public void tryToAttackTarget() {
+    try {
+      if (currentCharacter.isPlayerCharacter()) {
+        phase.attackTarget(getEnemies().get(targetIndex));
+      } else {
+        int randomValue = random.nextInt(getParty().size());
+        setTargetIndex(randomValue);
+        phase.attackTarget(getParty().get(targetIndex));
+      }
+    } catch (InvalidTransitionException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Set the index of the character target that will be attack.
+   * @param targetIndex index of the opponent
+   */
+  public void setTargetIndex(int targetIndex) {
+    this.targetIndex = targetIndex;
+  }
+
+  /**
+   * @return if the game is in the turn beginning phase.
+   */
+  public boolean isTurnBeginning() {
+    return phase.isTurnBeginning();
+  }
+
+  /**
+   * @return if the game is in the player decision phase.
+   */
+  public boolean isPlayerDecisionPhase() {
+    return phase.isPlayerDecisionPhase();
+  }
+
+  /**
+   *
+   * @return if the player is in the selection of the target phase.
+   */
+  public boolean isSelectingAttackTarget() {
+    return phase.isSelectingAttackTarget();
+  }
+
+  /**
+   * @return if the controller is waiting for a ready character in the turn queue.
+   */
+  public boolean isWaitingForReadyCharacter() {
+    return phase.isWaitingForReadyCharacter();
+  }
+
+  /**
+   * @return if the game is over.
+   */
+  public boolean isGameOver() {
+    return phase.isGameOver();
   }
 }
